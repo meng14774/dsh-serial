@@ -1,0 +1,29 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Pack the installable tarball
+        run: |
+          mkdir -p dist
+          npm pack --pack-destination dist
+          ls -l dist
+          shasum -a 256 dist/*.tgz || sha256sum dist/*.tgz
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.tgz
+          generate_release_notes: true

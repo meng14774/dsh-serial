@@ -1,0 +1,8 @@
+# dsh-serial bundle patch: inserts the host-only serial console plugin into the
+# active profile. Activate a local checkout with
+#   dsh plugin --profile <name> add link:~/code/dsh-serial
+# or install the published tarball with
+#   dsh plugin --profile <name> add @meng14774/dsh-serial
+- insert:
+    - id: dsh-serial
+      name: '@meng14774/dsh-serial'

@@ -1,0 +1,28 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install test dependencies
+        run: npm install --no-audit --no-fund
+      - name: Syntax check
+        run: for f in lib/*.js; do node --check "$f"; done
+      - name: Tool schemas (16 tools compile with the real defineTool)
+        run: node test/schema.mjs
+      - name: Platform wording (offline)
+        run: node test/platform.mjs
+      - name: Recovery, offline part
+        run: DSH_SERIAL_OFFLINE=1 node test/recovery.mjs

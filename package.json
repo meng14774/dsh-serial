@@ -1,0 +1,65 @@
+{
+  "name": "@meng14774/dsh-serial",
+  "version": "0.1.7",
+  "description": "Serial-port console for DSH agents: a persistent, always-reading port with an in-memory ring buffer, cursor-based incremental reads, expect/transact helpers, auto-responder rules, integrity-verified output, file push/pull, and port-safe session recovery (a dead reader never opens a different device) — no log files needed.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meng14774/dsh-serial.git"
+  },
+  "homepage": "https://github.com/meng14774/dsh-serial#readme",
+  "bugs": {
+    "url": "https://github.com/meng14774/dsh-serial/issues"
+  },
+  "author": "meng14774",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "serial",
+    "uart",
+    "console",
+    "pyserial",
+    "agent",
+    "embedded"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node test/schema.mjs && node test/platform.mjs",
+    "test:live": "node test/live.mjs"
+  },
+  "devDependencies": {
+    "@deepseek-ai/dsh-tools": "^0.0.1-rc.1",
+    "@deepseek-ai/schemastery": "^3.19.0"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/schemastery": "^3.18.1",
+    "@deepseek-ai/dsh-tools": ">=0.0.1-rc.1"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "AGENTS.md",
+    "PORTING-macOS.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT"
+}
