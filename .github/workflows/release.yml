@@ -22,8 +22,26 @@ jobs:
           npm pack --pack-destination dist
           ls -l dist
           shasum -a 256 dist/*.tgz || sha256sum dist/*.tgz
+      - name: Release notes from CHANGELOG.md
+        run: |
+          python3 - "$GITHUB_REF_NAME" > notes.md <<'PY'
+          import pathlib, re, sys
+
+          tag = sys.argv[1]
+          version = tag.lstrip("v")
+          text = pathlib.Path("CHANGELOG.md").read_text(encoding="utf-8")
+          match = re.search(
+              r"^## \[" + re.escape(version) + r"\][^\n]*\n(.*?)(?=^## \[|\Z)",
+              text,
+              re.M | re.S,
+          )
+          body = match.group(1).strip() if match else ""
+          print(body or ("Release " + tag + "."))
+          PY
+          cat notes.md
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           files: dist/*.tgz
-          generate_release_notes: true
+          body_path: notes.md
+          generate_release_notes: false
